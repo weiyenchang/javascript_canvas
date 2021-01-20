@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="Canvas">
+        <meta name="keywords" content="javascript">
+        <meta name="author" content="WEI-YEN">
+        <title>Assignment3 : Canvas</title>
+        <style>
+            header{
+                text-align: center;
+                color: #4ec6c6;
+            }
+            #myCanvas{
+                    border:2px solid white;
+            }
+        </style>
+    </head>
+    <body>
+        <audio id="v_fa">
+            <source src="audio/v.mp3" type="audio/ogg">
+            <source src="audio/v.mp3" type="audio/mpeg">
+        </audio>
+        <audio id="b_so">
+            <source src="audio/b.mp3" type="audio/ogg">
+            <source src="audio/b.mp3" type="audio/mpeg">
+        </audio>
+            <audio id="n_la">
+            <source src="audio/n.mp3" type="audio/ogg">
+            <source src="audio/n.mp3" type="audio/mpeg">
+        </audio>
+        <audio id="r_fa">
+            <source src="audio/r.mp3" type="audio/ogg">
+            <source src="audio/r.mp3" type="audio/mpeg">
+        </audio>
+        <audio id="t_so">
+            <source src="audio/t.mp3" type="audio/ogg">
+            <source src="audio/t.mp3" type="audio/mpeg">
+        </audio>
+        <audio id="y_la">
+            <source src="audio/y.mp3" type="audio/ogg">
+            <source src="audio/y.mp3" type="audio/mpeg">
+        </audio>
+        <audio id="u_si">
+            <source src="audio/u.mp3" type="audio/ogg">
+            <source src="audio/u.mp3" type="audio/mpeg">
+        </audio>
+        <audio id="one_do">
+            <source src="audio/1.mp3" type="audio/ogg">
+            <source src="audio/1.mp3" type="audio/mpeg">
+        </audio>
+        <audio id="two_re">
+            <source src="audio/2.mp3" type="audio/ogg">
+            <source src="audio/2.mp3" type="audio/mpeg">
+        </audio>
+        <audio id="three_mi">
+            <source src="audio/3.mp3" type="audio/ogg">
+            <source src="audio/3.mp3" type="audio/mpeg">
+        </audio>
+        <audio id="four_fa">
+            <source src="audio/4.mp3" type="audio/ogg">
+            <source src="audio/4.mp3" type="audio/mpeg">
+        </audio>
+        <audio id="five_so">
+            <source src="audio/5.mp3" type="audio/ogg">
+            <source src="audio/5.mp3" type="audio/mpeg">
+        </audio>
+            <audio id="six_la">
+            <source src="audio/6.mp3" type="audio/ogg">
+            <source src="audio/6.mp3" type="audio/mpeg">
+        </audio>
+        <audio id="seven_si">
+            <source src="audio/7.mp3" type="audio/ogg">
+            <source src="audio/7.mp3" type="audio/mpeg">
+        </audio>
+        <audio id="a_do">
+            <source src="audio/a.mp3" type="audio/ogg">
+            <source src="audio/a.mp3" type="audio/mpeg">
+        </audio>
+        <audio id="s_re">
+            <source src="audio/s.mp3" type="audio/ogg">
+            <source src="audio/s.mp3" type="audio/mpeg">
+        </audio>
+        <audio id="f_so">
+            <source src="audio/f.mp3" type="audio/ogg">
+            <source src="audio/f.mp3" type="audio/mpeg">
+        </audio>
+        <audio id="g_la">
+            <source src="audio/g.mp3" type="audio/ogg">
+            <source src="audio/g.mp3" type="audio/mpeg">
+        </audio>
+        <audio id="h_si">
+            <source src="audio/h.mp3" type="audio/ogg">
+            <source src="audio/h.mp3" type="audio/mpeg">
+        </audio>
+        <header>Using Keyboard to Play Piano</header>
+        <canvas id="myCanvas" width="1265" height="695"></canvas>
+        <script>
+            /*Variable*/
+            var canvas = document.getElementById("myCanvas");
+            var context = canvas.getContext("2d");
+            var colorChange=81;
+            var vFa = document.getElementById("v_fa");
+            var bSo = document.getElementById("b_so");
+            var nLa = document.getElementById("n_la");
+            var aDo = document.getElementById("a_do");
+            var sRe = document.getElementById("s_re");
+            var fSo = document.getElementById("f_so");
+            var gLa = document.getElementById("g_la");
+            var hSi = document.getElementById("h_si");
+            var rFa = document.getElementById("r_fa");
+            var tSo = document.getElementById("t_so");
+            var yLa = document.getElementById("y_la");
+            var uSi = document.getElementById("u_si");
+            var oneDo = document.getElementById("one_do");
+            var twoRe = document.getElementById("two_re");
+            var threeMi = document.getElementById("three_mi");
+            var fourFa = document.getElementById("four_fa");
+            var fiveSo = document.getElementById("five_so");
+            var sixLa = document.getElementById("six_la");
+            var sevenSi = document.getElementById("seven_si");
+            var trainMove=0;
+            var cloudX=0;
+            var cloudY=48;
+            var colorVelocity=-0.1;
+            var cloudSpeed=1;
+            
+            /*Background*/
+            //draw sky 
+            function drawBackground(){
+            context.fillStyle="hsl("+"182,"+"55%,"+colorChange+"%"+")";
+            context.fillRect(0,0,1265,378);
+            }
+            
+            //water
+            context.fillStyle="#4ec6c6";
+            context.fillRect(0,378,1265,320);  
+            
+            //draw big cloud
+            function drawBigCloud(x,y){
+                context.beginPath();
+                context.fillStyle="white";
+                context.fillRect(x+100,y+180,300,150);
+                context.arc(x+118,y+240,90,0,Math.PI*2);
+                context.arc(x+230,y+150,80,0,Math.PI*2);
+                context.arc(x+330,y+200,80,0,Math.PI*2);
+                context.arc(x+400,y+260,70,0,Math.PI*2);
+                context.fill();
+            }
+
+            //draw small cloud
+            function drawSmallCloud(w,z){
+                context.beginPath();
+                context.fillStyle="white";
+                context.fillRect(w+50,z+90,150,50);
+                context.arc(w+50,z+110,30,0,Math.PI*2);
+                context.arc(w+100,z+75,40,0,Math.PI*2);
+                context.arc(w+150,z+100,40,0,Math.PI*2);
+                context.arc(w+200,z+110,30,0,Math.PI*2);
+                context.fill();
+            }
+
+            // sky animation
+            function drawFrame(){
+                
+                drawBackground();
+                drawBigCloud(cloudX,cloudY);
+                drawSmallCloud(cloudX-700,cloudY-40);
+                drawSmallCloud(cloudX-300,cloudY);
+                drawSmallCloud(cloudX+400,cloudY);
+                cloudX = cloudX +cloudSpeed;
+            
+                // when the clouds exceed browser width 
+                if(cloudX>1920){
+                    cloudX=-800;
+                }
+
+                // To make the sky form daytime to night
+                colorChange=colorChange+colorVelocity;
+                if(colorChange<18){
+                    colorVelocity=0.1;
+                }
+                if(colorChange>88){
+                    colorVelocity=-0.1;
+                }
+                requestAnimationFrame(drawFrame);
+
+            }
+            requestAnimationFrame(drawFrame);
+            
+            /*Train Reflection*/
+            function drawReflection(backCarriageX){
+                
+                //Train body
+                context.beginPath();
+                context.globalAlpha =0.5;
+                context.fillStyle="#ffbe3b";
+                context.fillRect(backCarriageX+245,450,422,60);
+                context.fillRect(210,450,35,30);
+                context.fillRect(230,480,15,23);
+
+                context.fillStyle="#924541";
+                context.fillRect(backCarriageX+247,410,419,40);
+                context.fillRect(205,410,42,40);
+    
+                context.fillStyle="#7a4235";
+                context.globalAlpha =0.6;
+                context.fillRect(backCarriageX+245,393,422,17);
+                context.globalAlpha =0.3;
+                context.fillRect(205,393,41,17);
+
+                context.fillStyle="#313037";
+                context.fillRect(backCarriageX+246,393,60,17);
+                context.fillRect(backCarriageX+558,393,60,17);
+                
+                //Connection between two carriages
+                context.fillStyle="#4c4644";
+                context.fillRect(666,410,20,80);
+                
+                //Pattern
+                context.fillStyle="#7f3837"
+                for(pattern=245;pattern<=627;pattern=pattern+20){
+                    context.fillRect(backCarriageX+pattern,410,11,40);
+                }
+
+                //Roof of train
+                context.fillStyle="#71313e";
+                context.fillRect(backCarriageX+247,510,419,17);
+                context.fillRect(backCarriageX+330,527,36,12);
+                context.fillRect(backCarriageX+534,527,36,12);
+                
+                //Door
+                context.globalAlpha =0.8;
+                context.fillStyle="#de9f3b";
+                context.fillRect(backCarriageX+324,401,35,102);
+
+                //Window 
+                context.fillStyle="#a9a9a9";
+                context.bezierCurveTo(210,450,178,483,248,510);
+                context.fill();
+                
+                context.beginPath();
+                for(carWindows=252;carWindows<=632;carWindows=carWindows+37){
+                    context.fillRect(backCarriageX+carWindows,457,31,42);
+                }
+                //Light
+                context.arc(220,430,10,0,Math.PI*2);
+                context.fill();
+            }
+            
+            drawReflection(0);
+            drawReflection(440);
+
+            //wave
+            function drawWave(waveX,waveY){
+            context.beginPath();
+            context.moveTo(waveX,waveY);
+            context.lineTo(waveX+300,waveY);
+            context.strokeStyle="white";
+            context.lineWidth=3;
+            context.stroke(); 
+            } 
+            drawWave(600,450);
+            drawWave(350,420);
+
+            /*Piano*/
+            //white keyboard
+                function drawWhiteKeyboard(keyPositionX,keyPositionY,keyColor){
+                context.globalAlpha =1;
+                context.lineWidth=1;
+                context.fillStyle=keyColor;
+                context.fillRect(keyPositionX,500,50,194);
+                context.strokeStyle="#4ec6c6";
+                context.strokeRect(keyPositionX,500,50,194);
+                context.font = '25px sanerif';
+                context.fillStyle="#50bccd"
+                context.fillText(keyPositionY, keyPositionX+20, 650);
+                context.fillStyle="black";
+                }
+
+            //text on keyborad 
+                function drawBlackKeyboard(keyTextX,keyTextY,keyTextColor){
+                    context.fillStyle=keyTextColor;
+                    context.fillRect(keyTextX,500,30,100);
+                    context.fillStyle="#50bccd"
+                    context.fillText(keyTextY,keyTextX+10, 560);
+                }
+                
+                function drawWholeKeyboard(){
+                    drawWhiteKeyboard(880,"7","white");
+                    drawWhiteKeyboard(830,"6","white");
+                    drawWhiteKeyboard(780,"5","white");
+                    drawWhiteKeyboard(730,"4","white");
+                    drawWhiteKeyboard(680,"3","white");
+                    drawWhiteKeyboard(630,"2","white");
+                    drawWhiteKeyboard(580,"1","white");
+                    drawWhiteKeyboard(530,"u","white");
+                    drawWhiteKeyboard(480,"y","white");
+                    drawWhiteKeyboard(430,"t","white");
+                    drawWhiteKeyboard(380,"r","white");
+                    drawBlackKeyboard(865,"h","black");
+                    drawBlackKeyboard(815,"g","black");
+                    drawBlackKeyboard(765,"f","black");
+                    drawBlackKeyboard(665,"s","black");
+                    drawBlackKeyboard(615,"a","black");
+                    drawBlackKeyboard(515,"n","black");
+                    drawBlackKeyboard(465,"b","black");
+                    drawBlackKeyboard(415,"v","black");
+                }
+                drawWholeKeyboard();
+
+            //play key sound
+                function playSound(pressKey){
+                    console.log(pressKey);
+                    if(pressKey.which == 86){ // key v
+                        drawBlackKeyboard(415,"v","#777777");
+                        vFa.currentTime=0;
+                        vFa.play(); 
+                        trainMove=2;    
+                        cloudSpeed=8;
+                        reflectionLine(600,420);  
+                    }
+                    if(pressKey.which == 66){ // key b
+                        drawBlackKeyboard(465,"b","#777777");
+                        bSo.currentTime=0;
+                        bSo.play();
+                        trainMove=2;
+                        cloudSpeed=8;
+                    }
+                    if(pressKey.which == 78){ // key n
+                        drawBlackKeyboard(515,"n","#777777");
+                        nLa.currentTime=0;
+                        nLa.play(); 
+                        trainMove=2;
+                        cloudSpeed=8;
+                    }
+                    if(pressKey.which == 65){ // key a
+                        drawBlackKeyboard(615,"a","#777777");
+                        aDo.currentTime=0;
+                        aDo.play(); 
+                        trainMove=2;
+                        cloudSpeed=8;
+                    }
+                    if(pressKey.which == 83){ // key s
+                        drawBlackKeyboard(665,"s","#777777");
+                        sRe.currentTime=0;
+                        sRe.play();
+                        trainMove=2;
+                        cloudSpeed=8; 
+                    }
+                    if(pressKey.which == 70){ // key f
+                        drawBlackKeyboard(765,"f","#777777");
+                        fSo.currentTime=0;
+                        fSo.play();
+                        trainMove=2;
+                        cloudSpeed=8;
+                    }
+                    if(pressKey.which == 71){ // key g
+                        drawBlackKeyboard(815,"g","#777777");
+                        gLa.currentTime=0;
+                        gLa.play();
+                        trainMove=2;
+                        cloudSpeed=8;
+                    }
+                    if(pressKey.which == 72){ // key h
+                        drawBlackKeyboard(865,"h","#777777");
+                        hSi.currentTime=0;
+                        hSi.play(); 
+                        trainMove=2;
+                        cloudSpeed=8;
+                    }
+                    if(pressKey.which == 82){ // key r
+                        drawWhiteKeyboard(380,"r","#e2e2e2");
+                        drawBlackKeyboard(415,"v","black");
+                        rFa.currentTime=0;
+                        rFa.play();
+                        trainMove=2;
+                        cloudSpeed=8;
+                    }
+                    if(pressKey.which == 84){ // key t
+                        drawWhiteKeyboard(430,"t","#e2e2e2");
+                        drawBlackKeyboard(415,"v","black");
+                        drawBlackKeyboard(465,"b","black");
+                        tSo.currentTime=0;
+                        tSo.play();
+                        trainMove=2;
+                        cloudSpeed=8;
+                    }
+                    if(pressKey.which == 89){ // key y
+                        drawWhiteKeyboard(480,"y","#e2e2e2");
+                        drawBlackKeyboard(465,"b","black");
+                        drawBlackKeyboard(515,"n","black");
+                        yLa.currentTime=0;
+                        yLa.play();
+                        trainMove=1;
+                        cloudSpeed=8;
+                    }
+                    if(pressKey.which == 85){ // key u
+                        drawWhiteKeyboard(530,"u","#e2e2e2");
+                        drawBlackKeyboard(515,"n","black");
+                        uSi.currentTime=0;
+                        uSi.play();
+                        trainMove=2;
+                        cloudSpeed=8;
+                        reflectionLineWidth=reflectionLineWidth+100; 
+                    }
+                    if(pressKey.which == 49){ // key1
+                        drawWhiteKeyboard(580,"1","#e2e2e2");
+                        drawBlackKeyboard(615,"a","black");
+                        oneDo.currentTime=0;
+                        oneDo.play();
+                        trainMove=2;
+                        cloudSpeed=8;
+                    }
+                    if(pressKey.which == 50){ // key2
+                        drawWhiteKeyboard(630,"2","#e2e2e2");
+                        drawBlackKeyboard(665,"s","black");
+                        drawBlackKeyboard(615,"a","black");
+                        twoRe.currentTime=0;
+                        twoRe.play();
+                        trainMove=2; 
+                        cloudSpeed=8;
+                    }
+                    if(pressKey.which == 51){ // key3
+                        drawWhiteKeyboard(680,"3","#e2e2e2");
+                        drawBlackKeyboard(665,"s","black");
+                        threeMi.currentTime=0;
+                        threeMi.play();
+                        trainMove=2; 
+                        cloudSpeed=8; 
+                    }
+                    if(pressKey.which == 52){ // key4
+                        drawWhiteKeyboard(730,"4","#e2e2e2");
+                        drawBlackKeyboard(765,"f","black");
+                        fourFa.currentTime=0;
+                        fourFa.play();
+                        trainMove=2;
+                        cloudSpeed=8;
+                    }
+                    if(pressKey.which == 53){ // key5
+                        drawWhiteKeyboard(780,"5","#e2e2e2");
+                        drawBlackKeyboard(765,"f","black");
+                        drawBlackKeyboard(815,"g","black");
+                        fiveSo.currentTime=0;
+                        fiveSo.play(); 
+                        trainMove=2;
+                        cloudSpeed=8;
+                    }
+                    if(pressKey.which == 54){ // key6
+                        drawWhiteKeyboard(830,"6","#e2e2e2");
+                        drawBlackKeyboard(815,"g","black");
+                        drawBlackKeyboard(865,"h","black");
+                        sixLa.currentTime=0;
+                        sixLa.play(); 
+                        trainMove=2;
+                        cloudSpeed=8;
+                    }
+                    if(pressKey.which == 55){ // key7
+                        drawWhiteKeyboard(880,"7","#e2e2e2");
+                        drawBlackKeyboard(865,"h","black");
+                        sevenSi.currentTime=0;
+                        sevenSi.play();
+                        trainMove=2;
+                        cloudSpeed=8; 
+                    }
+                }
+
+
+            //stop key sound
+                function stopPlay(){
+                    drawWholeKeyboard();
+                    trainMove=0;
+                    cloudSpeed=1;
+                }
+                document.addEventListener('keyup',stopPlay);
+                document.addEventListener('keydown',playSound);
+                
+            
+            /*physical train*/
+            function drawTrain(backCarriageX,cab,trainMove){
+                // train body
+                context.beginPath();
+                context.fillStyle="#ffbe3b";
+                context.fillRect(backCarriageX+247,trainMove+269,419,102);
+                context.ellipse(backCarriageX+240,trainMove+312, 30, 42, Math.PI*cab / 8, 0, 2 * Math.PI*cab);//cab
+                context.fill();
+
+                context.fillStyle="#71313e";
+                context.fillRect(backCarriageX+247,trainMove+255,419,17);
+                context.fillRect(backCarriageX+330,trainMove+245,36,12);
+                context.fillRect(backCarriageX+534,trainMove+245,36,12);
+
+                context.fillStyle="#924541";
+                context.fillRect(backCarriageX+247,trainMove+330,419,40);
+                context.fillRect(backCarriageX+205,trainMove+330,42*cab,40*cab);
+
+                context.fillStyle="#7a4235";
+                context.fillRect(backCarriageX+247,trainMove+370,419,17);
+                context.fillRect(backCarriageX+205,trainMove+370,42*cab,17*cab);
+
+                context.fillStyle="#313037";
+                context.fillRect(backCarriageX+246,trainMove+370,60,17);
+                context.fillRect(backCarriageX+558,trainMove+370,60,17);
+
+                //Connection between two carriages
+                context.fillStyle="#4c4644";
+                context.fillRect(666,trainMove+283,21,80);
+
+                //train pattern
+                context.fillStyle="#7f3837"
+                for(pattern=246;pattern<=627;pattern=pattern+20){
+                    context.fillRect(backCarriageX+pattern,trainMove+330,11,40);
+                }
+
+                //train doors
+                context.globalAlpha =1;
+                context.fillStyle="#de9f3b";
+                context.fillRect(backCarriageX+325,trainMove+276,35,102);
+
+                //train windows
+                context.beginPath();
+                context.fillStyle="#a9a9a9";
+                context.ellipse(backCarriageX+225,300, 12, 30, Math.PI / 6*cab, 0, 2 * Math.PI*cab);
+                context.fill();
+                for(carWindows=253;carWindows<=632;carWindows=carWindows+37){
+                    context.fillRect(backCarriageX+carWindows,trainMove+281,31,42);
+                }
+                context.fillRect(backCarriageX+330,trainMove+281,25,42);
+
+                //light
+                context.beginPath();
+                context.arc(backCarriageX+220,trainMove+350,10,0,Math.PI*2*cab);
+                context.fill();
+            }
+            
+            function drawTrainFrame(){
+                drawTrain(0,1,trainMove);
+                drawTrain(440,0,trainMove);
+                requestAnimationFrame(drawTrainFrame);
+            }
+            requestAnimationFrame(drawTrainFrame);
+        </script>
+    </body>
+</html>
